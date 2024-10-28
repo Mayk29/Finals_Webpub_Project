@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+    <title>Login Page | PAPA J's Unli Samgy and Meat Shop</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #DBA979;
+        }
+
+        header {
+            background-image: url(../login/images/back2.jpg);
+            padding: 40px;
+            background-position: center;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: "Poor Story", system-ui;
+            font-weight: bold;
+            font-size: 50px;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 2px 2px 0 red;
+            color: #fff;
+            animation-name: bus-name;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            margin-left: 1em;
+        }
+
+        @keyframes bus-name {
+            from { color: #fff; }
+            to { color: orange; }
+        }
+
+        main {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20em;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form div {
+            margin-bottom: 25px;
+            padding-right: 3em;
+            padding-left: 2em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #ffba15;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ffba15;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e0a800;
+        }
+
+        .alert {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8d7da;
+            color: #721c24;
+            display: none;
+        }
+
+        footer {
+            width: 100%;
+            background-image: url(../landing/images/samgy.png);
+            background-size: contain;
+            padding-top: 4em;
+            padding-bottom: 3em;
+        }
+
+        footer p {
+            color: #ffffff;
+            background-color: #202020;
+            text-align: center;
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PAPA J's Unli Samgy and Meat Shop</h1>
+    </header>
+    <main>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div>
+                <input type="email" id="email" required placeholder="Email">
+            </div>
+            <div>
+                <input type="password" id="password" required placeholder="Password">
+            </div>
+            <button type="submit ">Login</button>
+            <button style="margin-top: 1em;"><a href="signup.html" style="color: #fff; text-decoration: none;">Create an Account</a></button>
+            <button style="margin-top: 1em;"><a href="../landing/index.html" style="color: #fff; text-decoration: none;">Return to Home Page</a></button>
+        </form>
+        <div class="alert" style="display:none;"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 PAPA J's Unli Samgy and Meat Shop</p>
+    </footer>
+    <script type="module" src="scripts/login.js"></script>
+</body>
+</html>

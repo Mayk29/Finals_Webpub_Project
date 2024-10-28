@@ -1,0 +1,7 @@
+Landing Page - use live server to load
+Feature Page - use live server to load
+Customer Page - need to be in website\contact\customer_list_API then run using nodemon index.js
+		this can be accessed by clicking view customer info in feature page
+Product Page - need to be in website\product-app then run using nodemon server.js
+Contact Page -use live server to load
+Login / Signup Page - use live server to load

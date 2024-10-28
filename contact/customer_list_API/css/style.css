@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    font-family: "Poor Story", system-ui;
+    font-weight: bold;
+    font-style: normal;
+}
+body{
+	width: 100%;
+	min-height: 100vh;
+	background-color: black;
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer List Page | PAPA J's Unli Samgy and Meat Shop </title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+  <style>
+    *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  text-transform: capitalize;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #DBA979;
+  min-height: 100vh;
+}
+
+header {
+    top:0;
+    left: 0;
+    height: 120px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    background-image: url(../images/back2.jpg);
+    background-position: 0% 20%;
+    box-shadow: 12px 2px 5px 1px #000000;
+    opacity: 1.5; 
+}
+
+header .logo{
+  display: flex;
+  align-items: center;
+}
+
+header .logo .haru-img{
+  position: relative;
+  left: 30px;
+  height: 80px;
+  margin: 0 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+
+header .logo .haru-img:hover{
+  height: 100px;
+}
+
+.logo-title{
+  font-family: "Poor Story", system-ui;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 30px;
+  text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 2px 2px 0 red;
+  color: #fff;
+  animation-name: bus-name;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  margin-left: 1em;
+}
+
+@keyframes bus-name{
+  from{color: #fff;}
+  to{color: orange;}
+}
+
+header .navbar{
+  transition: 3s linear;
+}
+
+header .navbar ul{
+  display: flex;
+  align-items: center;
+  width: 600px;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+header .navbar ul li a{
+ font-size: 35px;
+ color: #e2caca;
+ font-weight: bold; 
+ font-family: "Hi Melody";
+ font-style: normal;
+ background-color: #000;
+ border-radius: 5px;
+ padding: 5px;
+ text-decoration: none;
+}
+
+header .navbar ul li a:hover{
+  font-size: 35px;
+  color: #e2caca; 
+}
+header .navbar ul li:hover{
+  cursor: pointer;
+  background-color: #000000;
+  border-radius:5px ;
+  padding: 1em 1em;
+}
+footer{
+  width: 100%;
+  background-image: url(../images/samgy.png);
+  background-size: contain;
+  padding-top: 4em;
+  padding-bottom: 3em;
+}
+footer p{
+  color: #ffffff;
+  background-color: #202020;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.container{
+  margin: 50px 0 450px 0;
+  overflow: hidden;
+  justify-content: center;
+}
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-image: url(../images/business_loc_2_dark.jpg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .content h1 {
+    font-size: 2.5em;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .content p {
+    font-size: 1.2em;
+    color: #fff;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .content a {
+    color: #ffba15;
+    text-decoration: underline;
+  }
+
+  .content a:hover {
+    color: #ffb9159b;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body class="back-web">
+  <header>
+    <div class="logo">
+        <img class="haru-img" src="../images/logoJs.png" alt="Papa J's Logo">
+        <p class="logo-title">PAPA J's Unli Samgy and Meat Shop </p>
+    </div>
+    <div class="navbar">
+        
+    </div>
+</header>
+  <div class="container">
+    <div class="content">
+        <h1>API Endpoints for Customer List</h1>
+        <h3></h3><br>
+        <p>The following are the available routes</p>
+        <p><a href="/">Root Route</a>: Displays available routes.</p>
+        <p>GET <a href="api/customers">/api/customers</a>: Returns all customers.</p>
+        <p>GET <a href="api/customers/1">/api/customers/1</a>: Fetches a specific customer by ID.</p>
+        <p>GET <a href="api/customers/21/Andrei Valdez/avaldez@gmail.com/20/Porac/Student">api/customers/8/Valdez/a@email.com/20/Porac/Student</a>: Retrieves and displays parameters.</p>
+        <p>POST /api/customers: Adds a new customer through <a href="/api/customers/new" target="_blank">form submission</a>.</p>
+        <p>DELETE /api/delete/1: Deletes a customer by ID.</p>
+    </div> 
+  </div>
+  <footer>
+    <p>&copy; Copyright 2024 PAPA J's Unli Samgy and Meat Shop </p>
+  </footer>
+  
+</body>
+</html>

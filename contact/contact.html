@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,800;1,900&display=swap" rel="stylesheet">
+    <title>Contact Page | PAPA J's Unli Samgy and Meat Shop</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img class="haru-img" src="../feature/images/logoJs.png" alt="Papa J's Logo">
+            <p class="logo-title">PAPA J's Unli Samgy and Meat Shop</p>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="../landing/index.html">Home</a></li>
+                    <li><a href="../feature/index.html">Feature</a></li>
+                    <li><a href="../product-app/public/cart.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="../login/login.html"><i class="fa-solid fa-right-to-bracket" style="color: #fff; font-size: 18px; padding-right: 5px; padding-left: 2px;"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <main class="row">
+            <section class="col left">
+                <div class="contactTitle">
+                    <h2>Contact Information</h2>
+                    <h3>DELIGHTFUL KOREAN CUISINE</h3>
+                    <p>Experience the best Korean cuisine right in the heart of the city.</p>
+                    <p>Visit our customer feedbacks for you to Find out.<a href="customer_feedback.html" style="color: #ffba15; text-decoration: none; cursor: pointer;"><span> Click Here!</span></a></p>
+                </div>
+                <div class="contactInfo">
+                    <div class="iconGroup">
+                        <div class="icon">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="details">
+                            <span>Blogspot</span>
+                            <span>https://samgyupsal143buddies.blogspot.com/</span>
+                        </div>
+                    </div>
+                    <div class="iconGroup">
+                        <div class="icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="details">
+                            <span>Email</span>
+                            <span>siguijay@gmail.com</span>
+                        </div>
+                    </div>
+                    <div class="iconGroup">
+                        <div class="icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="details">
+                            <span>Location</span>
+                            <span>113 Purok 3, San Fernando, Philippines</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="socialMedia">
+                    <a href="SMM/smm_fb.html" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="SMM/smm_tiktok.html"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="SMM/smm_ig.html"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="SMM/smm_email.html"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </section>
+
+            <section class="col right">
+                <h2>Contact Form</h2>
+                <div class="alert" style="display:none; color: red;"></div>
+                <form class="messageForm" id="papajs">
+                    <div class="inputGroup halfWidth">
+                        <input type="text" name="fullname" required="required" id="fullname">
+                        <label for="fullname">Full Name</label>
+                    </div>
+                    <div class="inputGroup halfWidth">
+                        <input type="email" name="email" required="required" id="email">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="inputGroup fullWidth">
+                        <input type="tel" name="contact" required="required" id="contact" pattern="[0-9]{11}">
+                        <label for="contact">Contact No.</label>
+                    </div>
+                    <div class="inputGroup fullWidth">
+                        <textarea required=" required" id="message"></textarea>
+                        <label for="message">Message or Feedback</label>
+                    </div>
+                    <div class="inputGroup fullWidth">
+                        <button type="submit"> Submit Form</button>
+                    </div>
+                </form>
+                
+                <div id="map" class="col">
+                    <gmp-map 
+                        center="15.115124789068501,120.63444045417252" 
+                        zoom="17" map-id="DEMO_MAP_ID" 
+                        style="height: 400px">
+                        <gmp-advanced-marker
+                            position="15.115124789068501,120.63444045417252"
+                            title="PAPA J’S Unli Samgy and Meat Shop"
+                        ><h1 class="location">Our Location</h1 ></gmp-advanced-marker>
+                    </gmp-map>
+                </div>
+            </section>
+            
+        </main>
+        
+    </div>
+    
+    <footer>
+        <p>&copy; Copyright 2024 PAPA J's Unli Samgy and Meat Shop</p>
+    </footer>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByZ7V0cinymhV7rnfvYOofCTFvLYQQ0RU&loading=async&libraries=maps,marker&v=beta"
+    defer>
+      </script>
+</body>
+</html>

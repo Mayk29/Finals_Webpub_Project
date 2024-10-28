@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Add New Customer to Customer List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            text-transform: capitalize;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: #DBA979;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 2em;
+            font-size: 2.5em;
+            color: red;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #ccc;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #ccc;
+            color: #000;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody {
+            background-color: white;
+        }
+        header {
+    top:0;
+    left: 0;
+    height: 120px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    background-color: #1c1c1c;
+    background-position: 0% 20%;
+    box-shadow: 12px 2px 5px 1px #000000;
+    opacity: 1.5; 
+}
+
+header .logo{
+  display: flex;
+  align-items: center;
+}
+
+header .logo .haru-img{
+  position: relative;
+  left: 30px;
+  height: 80px;
+  margin: 0 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+
+header .logo .haru-img:hover{
+  height: 100px;
+}
+
+.logo-title{
+  font-family: "Poor Story", system-ui;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 30px;
+  text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 2px 2px 0 red;
+  color: #fff;
+  animation-name: bus-name;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  margin-left: 1em;
+}
+
+@keyframes bus-name{
+  from{color: #fff;}
+  to{color: orange;}
+}
+
+header .navbar{
+  transition: 3s linear;
+}
+
+header .navbar ul{
+  display: flex;
+  align-items: center;
+  width: 600px;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+header .navbar ul li a{
+ font-size: 35px;
+ color: #e2caca;
+ font-weight: bold; 
+ font-family: "Hi Melody";
+ font-style: normal;
+ background-color: #000;
+ border-radius: 5px;
+ padding: 5px;
+ text-decoration: none;
+}
+
+header .navbar ul li a:hover{
+  font-size: 35px;
+  color: #e2caca; 
+}
+header .navbar ul li:hover{
+  cursor: pointer;
+  background-color: #000000;
+  border-radius:5px ;
+  padding: 1em 1em;
+}
+    </style>
+</head>
+<body>
+    <header>
+    <div class="logo">
+        <p class="logo-title">PAPA J's Unli Samgy and Meat Shop </p>
+    </div>
+   
+</header>
+    <h1>Add a New Customer</h1>
+    <p>Fill out the form below.</p>
+    <form action="/api/customers" method="post">
+        <label>Name: </label><input type="text" name="name" id="name" required><br>
+        <label>Email: </label><input type="email" name="email" id="email" required><br>
+        <label>Age: </label><input type="number" name="age" id="age" required><br>
+        <label>Location: </label><input type="text" name="location" id="location" required><br>
+        <label>Occupation: </label><input type="text" name="occupation" id="occupation" required><br>
+        <button type="submit">Submit</button>
+    </form>
+    <button onClick="loadCustomers()">Show Customers</button>
+    <div>
+        <table border="2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Location</th>
+                    <th>Occupation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Customer rows will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="/middleware.js"></script>
+</body>
+</html>

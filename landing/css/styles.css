@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+body{
+    height: 100%;
+    background: url(../images/samgy.png) repeat-x;
+    background-size: 15% 240px ;
+    background-position: 0 850px;
+    overflow: auto;
+    background-color: #DBA979;
+}
+
+header{
+    position: fixed;
+    top:0;
+    left: 0;
+    height: 120px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    background-image: url(../images/back2.jpg);
+    background-position: 0% 20%;
+    box-shadow: 12px 2px 5px 1px #000000;
+    opacity: 1.5; 
+}
+
+header .logo{
+    display: flex;
+    align-items: center;
+}
+
+header .logo .haru-img{
+    position: relative;
+    left: 30px;
+    height: 80px;
+    margin: 0 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+
+
+header .logo .haru-img:hover{
+    height: 100px;
+}
+
+.logo-title{
+    font-family: "Poor Story", system-ui;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 30px;
+    text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 2px 2px 0 red;
+    color: #fff;
+    animation-name: bus-name;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    margin-left: 1em;
+}
+
+@keyframes bus-name{
+    from{color: #fff;}
+    to{color: orange;}
+}
+
+header .navbar{
+    transition: 3s linear;
+}
+
+header .navbar ul{
+    display: flex;
+    align-items: center;
+    width: 600px;
+    justify-content: space-around;
+    list-style-type: none;
+}
+
+header .navbar ul li a{
+   font-size: 35px;
+   color: #e2caca;
+   font-weight: bold; 
+   font-family: "Hi Melody";
+   font-style: normal;
+   background-color: #000;
+   border-radius: 5px;
+   padding: 5px;
+   text-decoration: none;
+}
+
+header .navbar ul li a:hover{
+    font-size: 35px;
+    color: #e2caca; 
+ }
+header .navbar ul li:hover{
+    cursor: pointer;
+    background-color: #000000;
+    border-radius:5px ;
+    padding: 1em 1em;
+    
+}
+
+.container{
+    margin: 100px auto;
+    background-image: url(../images/back.PNG);
+}
+
+.container .content{
+    position: relative;
+    
+}
+
+.container .content .info {
+    position: absolute;
+    top:100px;
+    left: 160px;
+    width: 700px;
+    text-align: justify;
+}
+
+.container .content .info h1{
+    font-family: "Poor Story", system-ui;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 60px;
+    letter-spacing: 12px;
+    text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 2px 2px 0 red;
+    color: #fff;
+}
+
+.container .content .info h3{
+    font-size: 50px;
+    color:#ff0000;
+    margin-bottom: 0.5em;
+    text-shadow: 2px 2px 7px #ffffff;
+    font-family: "Hi Melody";
+    font-weight: 400;
+    font-style: normal;
+}
+.container .content .info p{
+    color: #000;
+    font-size: 20px;
+    line-height: 2.5em;
+    text-transform: none;
+    letter-spacing: 2px;
+    font-family: "Salsa", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container .content .info p span{
+    color: #ffba15;
+    text-transform: lowercase;
+}
+
+.container .content .info p span:hover{
+    text-shadow: 2px 2px 7px #c3b091;
+}
+
+.container .content .info .flavors{
+    margin-left: 2em;
+    list-style-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000000"><path d="M9 19c-.26 0-.51-.1-.71-.29l-6-6A.996.996 0 1 1 3.7 11.3l5.29 5.29L20.28 5.3a.996.996 0 1 1 1.41 1.41l-12 12c-.2.2-.45.29-.71.29Z"></path></svg>');
+}
+
+.container .content .info .menu{
+    margin-top: 1em;
+}
+
+.container .content .info button{
+    height: 50px;
+    width: 150px;
+    background-color: #c3b091;
+    outline: none;
+    border: none;
+    margin-top: 20px;
+    border-radius: 5px;
+    
+}
+
+.container .content .info button:hover{
+    cursor: pointer;
+    box-shadow: 10px 3px 5px 1px #000000;
+    border-style: solid ;
+    border-color: #000000;
+}
+
+.container .content .info button a{
+    text-decoration: none;
+    color: black;
+}
+
+
+.container .content .product-img > img{
+    margin-top: 80px;
+    height: 500px;
+    width: 500px;
+    float: right;
+    padding-right: 100px;
+    margin-right: 200px;
+}
+
+
+.icons{
+    display: inline-block;
+    position: absolute;
+    text-align: justify;
+    left: 550px;
+  } 
+
+.icons img{
+    height: 20px;
+    background-color: #c3b091;
+    border-radius: 7px;
+}
+
+.icons img:hover{
+    cursor: pointer;
+    height: 30px;
+}
+
+.icons .fb-logo{
+    margin-right: 2em;
+}
+
+.icons .ig-logo{
+    margin-right: 2em;
+}
+
+.prod-slide{
+    display: none;
+}
+
+.door1{
+    margin-top: 80px;
+    height: 500px;
+    width: 500px;
+    float: right;
+    padding-left: 300px
+}
+
+.door2{
+    margin-top: 80px;
+    height: 500px;
+    width: 200px;
+    float: right;
+    position: fixed;
+    right: 100px;
+}
+    
