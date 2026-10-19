@@ -25,8 +25,6 @@ const fetchMessages = async () => {
             messageElement.classList.add("message");
             messageElement.innerHTML = `
                 <p><strong>Name:</strong> ${escapeHtml(message.fullname)}</p>
-                <p><strong>Email:</strong> ${escapeHtml(message.email)}</p>
-                <p><strong>Contact:</strong> ${escapeHtml(message.contact)}</p>
                 <p><strong>Message:</strong> ${escapeHtml(message.message)}</p>
                 <p><strong>Date Sent:</strong> ${sent.toLocaleString()}</p>
                 <hr>

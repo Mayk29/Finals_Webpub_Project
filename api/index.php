@@ -148,7 +148,14 @@ switch ($resource) {
     // ------------------------------------------------------------------ messages
     case 'contacts':
         if ($method === 'GET' && count($parts) === 1) {
-            respond(db()->query('SELECT fullname, email, contact, message, created_at FROM ' . t('contacts') . ' ORDER BY id')->fetchAll());
+            // Visitors only see name, message and date. Email and phone are
+            // private: they need the admin key (?full=1 + X-Admin-Key header).
+            $full = isset($_GET['full']);
+            if ($full) {
+                require_admin();
+            }
+            $columns = $full ? 'fullname, email, contact, message, created_at' : 'fullname, message, created_at';
+            respond(db()->query('SELECT ' . $columns . ' FROM ' . t('contacts') . ' ORDER BY id')->fetchAll());
         }
         if ($method === 'POST' && count($parts) === 1) {
             $in = input();

@@ -1,0 +1,280 @@
+/*
+  PAPA J's responsive layer. Load it LAST on every page.
+  Nothing here applies above 1100px, so the desktop design is unchanged.
+  Two breakpoints like the velox sites: 1100px (tablet and phone; wider than velox because these pages use fixed-pixel layouts) and 600px (phone).
+*/
+
+.menu-toggle { display: none; }
+
+/* The empty/error note on the feedback page was black text on the black panel. */
+#messagesContainer > p { color: #fff; text-align: center; }
+
+@media (max-width: 1100px) {
+  img, video { max-width: 100%; }
+
+  /* ---------- Header and menu ---------- */
+  header {
+    height: 72px !important;
+    padding: 0 16px !important;
+    gap: 12px;
+    z-index: 50;
+  }
+  header .logo { flex: 1 1 auto; min-width: 0; }
+  header .logo .haru-img,
+  header .logo .haru-img:hover {
+    position: static;
+    left: auto;
+    height: 52px;
+    margin: 0 8px 0 0;
+    flex: 0 0 auto;
+  }
+  header .logo .logo-title,
+  .logo-title {
+    margin-left: 0;
+    font-size: clamp(15px, 4.2vw, 24px);
+    line-height: 1.15;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0;
+    border: 2px solid #e2caca;
+    border-radius: 6px;
+    background: #000;
+    cursor: pointer;
+  }
+  .menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: #e2caca;
+    transition: transform .2s, opacity .2s;
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+  header .navbar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    display: block;
+    max-height: calc(100vh - 72px);
+    max-height: calc(100dvh - 72px);
+    overflow-y: auto;
+    background: #000;
+    box-shadow: 0 22px 44px rgba(0, 0, 0, .5);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity .22s, transform .22s, visibility .22s;
+  }
+  header .navbar.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  header .navbar ul {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 6px 16px 18px;
+  }
+  header .navbar ul li,
+  header .navbar ul li:hover {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+  header .navbar ul li a,
+  header .navbar ul li a:hover {
+    display: block;
+    padding: 14px 6px;
+    border-bottom: 1px solid rgba(226, 202, 202, .2);
+    border-radius: 0;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  header .navbar ul li:last-child a { border-bottom: 0; }
+
+  /* ---------- Landing page ---------- */
+  .container:has(.info) { margin-top: 96px; }
+  .container .content .info {
+    position: static;
+    width: auto;
+    padding: 0 16px;
+  }
+  .container .content .info h1 { font-size: clamp(40px, 9vw, 60px); letter-spacing: 6px; }
+  .container .content .info h3 { font-size: clamp(28px, 6vw, 44px); }
+  .container .content .info p { font-size: 17px; line-height: 2; letter-spacing: 1px; }
+  .container .content .product-img > img {
+    float: none;
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+    margin: 28px auto 0;
+    padding: 0;
+  }
+  .door1, .door2 { display: none; }
+
+  /* ---------- Hero banner (feature, social pages) ---------- */
+  .hero-img { height: clamp(280px, 62vw, 460px); }
+  .hero-text {
+    width: calc(100% - 32px);
+    padding: 16px;
+  }
+  .hero-text h2 { font-size: clamp(24px, 6vw, 40px); margin-bottom: 10px; }
+  .hero-text p { font-size: clamp(14px, 2.6vw, 18px); margin-bottom: 0; }
+
+  /* ---------- Feature page ---------- */
+  .container:has(.hero-img) { margin: 24px 0 0; }
+  #food-gallery { margin: 16px; bottom: 0; }
+  .first-item, .last-item { right: 0; left: 0; }
+  .food-item, .first-item, .last-item { width: min(100%, 320px); }
+  .first-item video, .last-item video { width: 100%; height: auto; aspect-ratio: 3 / 5; }
+
+  .display-offer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 4em;
+  }
+  .product-disp, .product-disp1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 0;
+    width: 100%;
+  }
+  .product-disp img, .product-disp1 img {
+    display: block;
+    width: min(100%, 300px);
+    margin: 0;
+  }
+  .product-disp1 figure { display: block; width: min(100%, 300px); margin: 0; }
+  .product-disp1 figure figcaption { margin-left: 0; }
+  .product-display, .product-display1 { margin: 2.4em 16px 1.6em; font-size: 1.5em; }
+  .cust-info { width: 100%; }
+
+  .display-info { width: 100%; padding: 0 16px; margin: 1em 0 2em; }
+  .display-info h3 { font-size: 1.5em; }
+  .info-disp, .img-disp { width: 100%; margin: 0; line-height: 1.8; }
+  .img-disp { margin-top: 16px; }
+
+  /* ---------- Social media pages ---------- */
+  .smm { left: 0; }
+  .product-disp .col-6 { width: 100%; text-align: center; }
+  .product-disp img.smm, .product-disp img.fb-smm { width: min(100%, 450px); margin: 0 auto; }
+  .fb-smm { height: auto; }
+  .display-offer-email { margin: 0 16px; }
+  .product-disp-email img { display: block; width: min(100%, 450px); height: auto; margin: 0 auto; }
+
+  /* ---------- Contact page ---------- */
+  .container .row { gap: 24px; }
+  #map { right: 0; width: 100%; height: 300px; }
+
+  /* ---------- Products / cart page ---------- */
+  .body-cart header { padding: 0 16px; }
+  .header-content {
+    width: calc(100% - 32px);
+    height: auto;
+    min-height: 64px;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 96px;
+    padding: 12px;
+  }
+  .header-content h1 { flex: 1 1 100%; font-size: clamp(20px, 4.6vw, 26px); }
+  .header-content .search-bar { flex: 1 1 180px; min-width: 0; margin-left: 0; }
+  .header-content .search-bar input { width: 100%; }
+  .cart { margin-left: 0; cursor: pointer; }
+  .filter-sort {
+    width: calc(100% - 32px);
+    margin-top: 20px;
+    gap: 10px;
+  }
+  .filter-sort select { flex: 1 1 0; min-width: 0; margin-right: 0; }
+  .body-cart .container {
+    width: calc(100% - 32px);
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+    margin-bottom: 64px;
+  }
+  #product-list { width: 100%; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .img-box { height: auto; min-height: 220px; }
+  .images { width: min(65%, 240px); max-width: 240px; height: auto; }
+  .sidebar { width: 100%; margin-left: 0; }
+
+  /* ---------- Customer list pages ---------- */
+  .content a, .content p { overflow-wrap: anywhere; }
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  form input { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  header { height: 64px !important; padding: 0 12px !important; }
+  header .logo .haru-img, header .logo .haru-img:hover { height: 44px; }
+  header .navbar { max-height: calc(100vh - 64px); max-height: calc(100dvh - 64px); }
+  header .navbar ul li a, header .navbar ul li a:hover { font-size: 24px; }
+  .menu-toggle { width: 42px; height: 42px; }
+
+  .container:has(.info) { margin-top: 84px; }
+  .container .content .info { padding: 0 16px; }
+  .container .content .info h1 { letter-spacing: 4px; }
+  .container .content .info p { font-size: 16px; line-height: 1.9; }
+  .container .content .product-img > img { margin-top: 20px; }
+
+  .hero-img { height: 320px; }
+  .display-info h3 { font-size: 1.25em; }
+
+  .container .row { padding: 0; }
+  .row section.left { min-width: 0; }
+  .contactInfo .iconGroup .details span { overflow-wrap: anywhere; }
+
+  .header-content { margin-top: 84px; }
+  #product-list { grid-template-columns: 1fr; }
+
+  .sidebar { padding: 12px; }
+}
+
+/* Landing page on laptops: the original text block (700px at left 160px) runs under the photo
+   until the screen is about 1700px wide, so keep the stacked layout up to there. */
+@media (min-width: 1101px) and (max-width: 1700px) {
+  .container:has(.info) { margin-top: 148px; }
+  .container:has(.info) .content .info {
+    position: static;
+    width: min(900px, calc(100% - 64px));
+    margin: 0 auto;
+  }
+  .container:has(.info) .content .product-img > img {
+    float: none;
+    display: block;
+    width: min(100%, 480px);
+    height: auto;
+    margin: 28px auto 0;
+    padding: 0;
+  }
+  .container:has(.info) .door1,
+  .container:has(.info) .door2 { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
