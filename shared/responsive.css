@@ -313,6 +313,20 @@
   .container:has(.info) .door2 { left: 84.4vw; }
 }
 
+/* Feature and social pages on laptops. The gallery and trivia block were laid out for a 1920px screen:
+   the last video wrapped onto a row shared with the next section (and stretched into a tall black box),
+   and the trivia text and infographic fell onto separate rows. Same design, sized to fit. */
+@media (min-width: 1101px) and (max-width: 1919px) {
+  #food-gallery { align-items: flex-start; }
+  .food-item, .first-item, .last-item { width: clamp(170px, calc((100vw - 270px) / 6), 250px); }
+  .first-item video, .last-item video { width: 100%; height: auto; aspect-ratio: 3 / 5; }
+  #food-gallery > div:not([class]) { flex: 0 0 100%; text-align: center; }
+  .info-disp { width: calc(50% - 30px); }
+}
+@media (min-width: 1101px) and (max-width: 1699px) {
+  .first-item, .last-item { right: 0; left: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
