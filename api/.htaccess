@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+
+# Never serve the database file directly.
+<FilesMatch "\.sqlite$">
+    Require all denied
+</FilesMatch>

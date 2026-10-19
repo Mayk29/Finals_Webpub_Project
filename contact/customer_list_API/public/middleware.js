@@ -1,6 +1,6 @@
 function loadCustomers() 
 {
-    fetch('/api/customers')
+    fetch('../../api/customers')
     .then(response => response.json())
     .then(customers => { 
         const tableBody = document.querySelector('tbody');
@@ -9,7 +9,7 @@ function loadCustomers()
         customers.forEach(customer => { 
             const row =  
             `<tr>
-                <td><img src="/images/avatar.png"></td>
+                <td><img src="public/images/avatar.png"></td>
                 <td>${customer.id}</td>
                 <td>${customer.name}</td>
                 <td>${customer.email}</td>

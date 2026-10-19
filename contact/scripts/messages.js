@@ -1,46 +1,38 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyA_E5vZPfyCYgQqwUByKT5GpY9-onhtZXA",
-    authDomain: "papajs-10c5e.firebaseapp.com",
-    databaseURL: "https://papajs-10c5e-default-rtdb.firebaseio.com/",
-    projectId: "papajs-10c5e",
-    storageBucket: "papajs-10c5e.appspot.com",
-    messagingSenderId: "2229621205",
-    appId: "1:2229621205:web:ea4f72eceb87f43040ed5c",
-    measurementId: "G-E7VC9SECHH"
+const escapeHtml = (value) => {
+    const div = document.createElement("div");
+    div.textContent = value;
+    return div.innerHTML;
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
-// Function to fetch messages from Firebase
+// Function to fetch messages from the PHP API
 const fetchMessages = async () => {
     const messagesContainer = document.getElementById("messagesContainer");
     messagesContainer.innerHTML = ''; // Clear previous messages
 
-    const messagesRef = ref(database, 'contacts/');
-    const snapshot = await get(messagesRef);
+    let messages = [];
+    try {
+        const response = await fetch("../api/contacts");
+        messages = await response.json();
+    } catch (error) {
+        messagesContainer.innerHTML = "<p>Could not load messages.</p>";
+        return;
+    }
 
-    if (snapshot.exists()) {
-        const messages = snapshot.val();
-        for (const key in messages) {
-            const message = messages[key];
+    if (Array.isArray(messages) && messages.length > 0) {
+        messages.forEach((message) => {
+            const sent = message.created_at ? new Date(message.created_at.replace(" ", "T") + "Z") : new Date();
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
             messageElement.innerHTML = `
-                <p><strong>Name:</strong> ${message.fullname}</p>
-                <p><strong>Email:</strong> ${message.email}</p>
-                <p><strong>Contact:</strong> ${message.contact}</p>
-                <p><strong>Message:</strong> ${message.message}</p>
-                <p><strong>Date Sent:</strong> ${new Date().toLocaleString()}</p>
+                <p><strong>Name:</strong> ${escapeHtml(message.fullname)}</p>
+                <p><strong>Email:</strong> ${escapeHtml(message.email)}</p>
+                <p><strong>Contact:</strong> ${escapeHtml(message.contact)}</p>
+                <p><strong>Message:</strong> ${escapeHtml(message.message)}</p>
+                <p><strong>Date Sent:</strong> ${sent.toLocaleString()}</p>
                 <hr>
             `;
             messagesContainer.appendChild(messageElement);
-        }
+        });
     } else {
         messagesContainer.innerHTML = "<p>No messages found.</p>";
     }
@@ -52,7 +44,7 @@ const searchMessages = () => {
     const messages = document.querySelectorAll(".message");
 
     messages.forEach((message) => {
-        const name = message.querySelector("p strong").nextSibling.textContent.trim().toLowerCase(); 
+        const name = message.querySelector("p strong").nextSibling.textContent.trim().toLowerCase();
 
         if (name.includes(input)) {
             message.style.display = "block";

@@ -1,0 +1,4 @@
+node_modules/
+api/config.php
+api/*.sqlite
+dist/

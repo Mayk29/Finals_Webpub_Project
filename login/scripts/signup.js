@@ -1,22 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyA_E5vZPfyCYgQqwUByKT5GpY9-onhtZXA",
-    authDomain: "papajs-10c5e.firebaseapp.com",
-    databaseURL: "https://papajs-10c5e-default-rtdb.firebaseio.com/",
-    projectId: "papajs-10c5e",
-    storageBucket: "papajs-10c5e.appspot.com",
-    messagingSenderId: "2229621205",
-    appId: "1:2229621205:web:ea4f72eceb87f43040ed5c",
-    measurementId: "G-E7VC9SECHH"
-};
-
-// Initialize Firebase and Realtime Database
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("signupForm").addEventListener("submit", signupUser );
 });
@@ -24,36 +5,43 @@ document.addEventListener("DOMContentLoaded", () => {
 async function signupUser (e) {
     e.preventDefault();
 
-    const name = getElementVal("name");
-    const email = getElementVal("email").replace(/\./g, '_');
-    const age = getElementVal("age");
-    const location = getElementVal("location");
-    const occupation = getElementVal("occupation");
-    const password = getElementVal("password");
+    const user = {
+        name: getElementVal("name"),
+        email: getElementVal("email"),
+        age: getElementVal("age"),
+        location: getElementVal("location"),
+        occupation: getElementVal("occupation"),
+        password: getElementVal("password")
+    };
 
     try {
-        await set(ref(database, 'users/' + email), {
-            name: name,
-            email: getElementVal("email"), 
-            age: age,
-            location: location,
-            occupation: occupation,
-            password: password
+        const response = await fetch("../api/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user)
         });
-        document.querySelector(".alert").innerText = "User  created successfully!";
-        document.querySelector(".alert").style.display = "block";
-        setTimeout(() => {
-            document.querySelector(".alert").style.display = "none";
-        }, 3000);
+        const result = await response.json();
+
+        if (response.ok) {
+            showAlert("User created successfully!");
+            document.getElementById("signupForm").reset();
+        } else {
+            showAlert("Error creating user: " + (result.error || response.status));
+        }
     } catch (error) {
-        document.querySelector(".alert").innerText = "Error creating user: " + error.message;
-        document.querySelector(".alert").style.display = "block";
-        setTimeout(() => {
-            document.querySelector(".alert").style.display = "none";
-        }, 3000);
+        showAlert("Error creating user: " + error.message);
     }
 }
 
 function getElementVal(id) {
     return document.getElementById(id).value;
+}
+
+function showAlert(message) {
+    const alertBox = document.querySelector(".alert");
+    alertBox.innerText = message;
+    alertBox.style.display = "block";
+    setTimeout(() => {
+        alertBox.style.display = "none";
+    }, 3000);
 }

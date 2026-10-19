@@ -4,7 +4,8 @@ let products = [];
 // Function to fetch products from the REST API
 async function fetchProducts() {
     try {
-        const response = await fetch('http://localhost:3000/api/products');
+        const response = await fetch('../../api/products');
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         products = await response.json();
         console.log('Fetched Products:', products); 
         displayProducts(products);
