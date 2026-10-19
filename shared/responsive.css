@@ -111,25 +111,45 @@
   }
   header .navbar ul li:last-child a { border-bottom: 0; }
 
-  /* ---------- Landing page ---------- */
+  /* ---------- Landing page: same composition, text on top and the door-photo-door row below ---------- */
   .container:has(.info) { margin-top: 96px; }
-  .container .content .info {
+  .container:has(.info) .content {
+    --w: min(calc(100vw - 24px), 800px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .container:has(.info) .content .info {
+    order: 1;
     position: static;
+    flex: 0 0 100%;
     width: auto;
     padding: 0 16px;
   }
-  .container .content .info h1 { font-size: clamp(40px, 9vw, 60px); letter-spacing: 6px; }
-  .container .content .info h3 { font-size: clamp(28px, 6vw, 44px); }
-  .container .content .info p { font-size: 17px; line-height: 2; letter-spacing: 1px; }
-  .container .content .product-img > img {
+  .container:has(.info) .content .info h1 { font-size: clamp(40px, 9vw, 60px); letter-spacing: 6px; }
+  .container:has(.info) .content .info h3 { font-size: clamp(28px, 6vw, 44px); }
+  .container:has(.info) .content .info p { font-size: 17px; line-height: 2; letter-spacing: 1px; }
+  .container:has(.info) .door1,
+  .container:has(.info) .door2 {
+    position: static;
     float: none;
-    display: block;
-    width: min(100%, 420px);
-    height: auto;
-    margin: 28px auto 0;
+    width: calc(var(--w) * .25);
+    height: calc(var(--w) * .625);
+    margin: 28px 0 0;
     padding: 0;
   }
-  .door1, .door2 { display: none; }
+  .container:has(.info) .door1 { order: 2; }
+  .container:has(.info) .product-img { order: 3; }
+  .container:has(.info) .door2 { order: 4; }
+  .container:has(.info) .content .product-img > img {
+    float: none;
+    display: block;
+    width: calc(var(--w) * .5);
+    height: calc(var(--w) * .625);
+    margin: 28px 0 0;
+    padding: 0;
+  }
 
   /* ---------- Hero banner (feature, social pages) ---------- */
   .hero-img { height: clamp(280px, 62vw, 460px); }
@@ -236,10 +256,8 @@
   .menu-toggle { width: 42px; height: 42px; }
 
   .container:has(.info) { margin-top: 84px; }
-  .container .content .info { padding: 0 16px; }
-  .container .content .info h1 { letter-spacing: 4px; }
-  .container .content .info p { font-size: 16px; line-height: 1.9; }
-  .container .content .product-img > img { margin-top: 20px; }
+  .container:has(.info) .content .info h1 { letter-spacing: 4px; }
+  .container:has(.info) .content .info p { font-size: 16px; line-height: 1.9; }
 
   .hero-img { height: 320px; }
   .display-info h3 { font-size: 1.25em; }
@@ -254,25 +272,45 @@
   .sidebar { padding: 12px; }
 }
 
-/* Landing page on laptops: the original text block (700px at left 160px) runs under the photo
-   until the screen is about 1700px wide, so keep the stacked layout up to there. */
-@media (min-width: 1101px) and (max-width: 1700px) {
-  .container:has(.info) { margin-top: 148px; }
+/* Landing page on laptops and small desktops. The original layout is a 1920px artboard (text at left 160px,
+   door, photo and door in a row to the right). Below 1920px the same positions are kept but scaled with the
+   screen width, so the text column and the pictures never overlap. */
+@media (min-width: 1101px) and (max-width: 1919px) {
   .container:has(.info) .content .info {
-    position: static;
-    width: min(900px, calc(100% - 64px));
-    margin: 0 auto;
+    left: 8.33vw;
+    width: 36.5vw;
+  }
+  .container:has(.info) .content .info h1 { font-size: clamp(40px, 3.125vw, 60px); letter-spacing: clamp(6px, .625vw, 12px); }
+  .container:has(.info) .content .info h3 { font-size: clamp(28px, 2.6vw, 50px); }
+  .container:has(.info) .content .info p { font-size: clamp(15px, 1.04vw, 20px); line-height: 2.3; letter-spacing: 1.5px; }
+  .container:has(.info) .content .info button { margin-top: 12px; }
+
+  .container:has(.info) .content .product-img {
+    position: absolute;
+    top: 80px;
+    left: 63.5vw;
   }
   .container:has(.info) .content .product-img > img {
     float: none;
     display: block;
-    width: min(100%, 480px);
-    height: auto;
-    margin: 28px auto 0;
+    width: 20.83vw;
+    height: 26.04vw;
+    margin: 0;
     padding: 0;
   }
   .container:has(.info) .door1,
-  .container:has(.info) .door2 { display: none; }
+  .container:has(.info) .door2 {
+    position: absolute;
+    top: 80px;
+    right: auto;
+    float: none;
+    width: 10.42vw;
+    height: 26.04vw;
+    margin: 0;
+    padding: 0;
+  }
+  .container:has(.info) .door1 { left: 53.1vw; }
+  .container:has(.info) .door2 { left: 84.4vw; }
 }
 
 @media (prefers-reduced-motion: reduce) {
