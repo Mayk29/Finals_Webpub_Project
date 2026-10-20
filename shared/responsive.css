@@ -408,6 +408,9 @@ body:has(> main) footer { margin-top: 0; }
 }
 .body-cart .container { width: var(--shell-w); max-width: none; padding-inline: 0; margin-top: var(--page-gap); margin-bottom: 0; } /* the page loads Bootstrap, whose .container caps the width */
 /* Product photos were taller than their fixed 250px box and covered the product title: let the box grow with the photo. */
+/* Ratings are shown, not clicked: they are the average of past customers' reviews. */
+.rating, .rating .samgyup { cursor: default; pointer-events: none; }
+
 /* Cart panel: as tall as its content (it was stretched to the height of the product list); it grows only when items are added. */
 @media (min-width: 1100.02px) { .sidebar { align-self: flex-start; position: sticky; top: calc(var(--hdr) + 16px); } }
 .img-box { height: auto; min-height: 220px; }

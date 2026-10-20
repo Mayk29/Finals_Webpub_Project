@@ -145,6 +145,7 @@
             });
             var result = await response.json();
             if (!response.ok) throw new Error(result.error || 'Something went wrong.');
+            try { sessionStorage.setItem('papaj_contact', data.contact); } catch (e) { /* storage may be blocked */ }
             done(result, data.type);
         } catch (err) {
             showError(err.message);
@@ -159,7 +160,8 @@
             '<div class="co-done"><h3>Thank you for your order!</h3>' +
             '<p>Your order number</p><p class="co-order-no">#' + result.id + '</p>' +
             '<p>Total: ' + peso(result.total) + '</p><p>' + how + '</p>' +
-            '<div class="co-actions"><button type="button" class="co-btn co-btn-primary" id="co-finish">Back to menu</button></div></div>';
+            '<div class="co-actions"><button type="button" class="co-btn co-btn-primary" id="co-finish">Back to menu</button>' +
+            '<a class="co-btn co-btn-secondary" href="orders.html" style="text-align:center;text-decoration:none">My orders</a></div></div>';
         document.getElementById('co-finish').addEventListener('click', close);
         document.getElementById('co-finish').focus();
         cart = [];

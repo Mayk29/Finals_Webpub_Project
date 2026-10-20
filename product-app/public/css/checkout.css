@@ -150,3 +150,8 @@ body.co-lock { overflow: hidden; }
     .co-head, .co-body { padding-inline: 16px; }
     .co-btn { flex-basis: 100%; }
 }
+
+/* Link from the cart panel to the My Orders page */
+.sidebar .head { justify-content: space-between; }
+.orders-link { color: #ffba15; font-size: 16px; text-decoration: underline; }
+.orders-link:hover { color: #fff; }

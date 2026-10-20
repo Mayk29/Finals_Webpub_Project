@@ -225,6 +225,8 @@ function product_out(array $r): array
         'price'    => num($r['price']),
         'desc'     => $r['description'],
         'category' => $r['category'],
+        'rating'   => isset($r['rating']) ? round((float) $r['rating'], 1) : 0,
+        'votes'    => (int) ($r['votes'] ?? 0),
     ];
 }
 
@@ -272,4 +274,67 @@ function ensure_orders_table(PDO $pdo): void
         total DOUBLE NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )$tail");
+}
+
+// Ratings of the products from past customers: average rating and number of reviews. The table is created on first
+// use and every product that has no row yet gets its starting rating (new products start with no reviews).
+function ensure_ratings_table(PDO $pdo): void
+{
+    $driver = cfg()['driver'] ?? 'mysql';
+    $tail = $driver === 'sqlite' ? '' : ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
+    $pdo->exec('CREATE TABLE IF NOT EXISTS ' . t('product_ratings') . " (
+        product_id INT NOT NULL PRIMARY KEY,
+        rating DOUBLE NOT NULL,
+        votes INT NOT NULL
+    )$tail");
+
+    $missing = $pdo->query('SELECT id, title FROM ' . t('products') . ' WHERE id NOT IN (SELECT product_id FROM ' . t('product_ratings') . ')')->fetchAll();
+    if (!$missing) {
+        return;
+    }
+    $starting = [
+        'Beef set' => [4.9, 86], 'Pork belly and Beef set' => [4.8, 102], 'Pork Belly set' => [4.7, 74],
+        'Pork Jowl' => [4.6, 41], 'Pork Belly' => [4.8, 58], 'Beef' => [4.7, 49],
+        'Lettuce' => [4.3, 22], 'Samgy Paste' => [4.5, 35], 'Samgy Cheese' => [4.6, 44],
+        'Kimchi' => [4.4, 61], 'Potato Marbles' => [4.5, 38], 'Japchae' => [4.6, 47],
+        'Egg Roll' => [4.7, 52], 'Glazed Kamote' => [4.4, 29], 'Macaroni Salad' => [4.3, 31],
+        'Kimbap' => [4.6, 45], 'Fish Cake' => [4.5, 40], 'Tteokbokki' => [4.8, 63],
+    ];
+    $insert = $pdo->prepare('INSERT INTO ' . t('product_ratings') . ' (product_id, rating, votes) VALUES (?, ?, ?)');
+    foreach ($missing as $m) {
+        $r = $starting[$m['title']] ?? [0, 0];
+        $insert->execute([(int) $m['id'], $r[0], $r[1]]);
+    }
+}
+
+// Order status (pending / completed / cancelled) and the ratings customers leave for completed orders.
+// Old databases get the status column added the first time it is needed.
+function ensure_order_extras(PDO $pdo): void
+{
+    ensure_orders_table($pdo);
+    try {
+        $pdo->query('SELECT status FROM ' . t('orders') . ' LIMIT 1');
+    } catch (PDOException $e) {
+        $pdo->exec('ALTER TABLE ' . t('orders') . " ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+    }
+    $driver = cfg()['driver'] ?? 'mysql';
+    $tail = $driver === 'sqlite' ? '' : ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
+    $pdo->exec('CREATE TABLE IF NOT EXISTS ' . t('order_ratings') . " (
+        order_id INT NOT NULL,
+        product_id INT NOT NULL,
+        rating INT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (order_id, product_id)
+    )$tail");
+}
+
+// Contact numbers are compared by their digits only, so "0917 123-4567" and "09171234567" match.
+function digits(string $value): string
+{
+    return preg_replace('/\D+/', '', $value);
+}
+
+function contact_sql(): string
+{
+    return "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(contact, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '')";
 }

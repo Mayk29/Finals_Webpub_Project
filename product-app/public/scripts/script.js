@@ -14,6 +14,22 @@ async function fetchProducts() {
     }
 }
 
+// Past customers' rating: read-only. It is the stored average of earlier reviews, not something a visitor sets.
+function ratingHtml(product) {
+    const votes = product.votes || 0;
+    if (!votes) {
+        return '<div class="rating" aria-hidden="true">' + '<span class="samgyup"><i class="fa-solid fa-bacon"></i></span>'.repeat(5) + '</div>' +
+               '<div class="average-rating">No reviews yet</div>';
+    }
+    const filled = Math.round(product.rating);
+    let icons = '';
+    for (let i = 1; i <= 5; i++) {
+        icons += '<span class="samgyup' + (i <= filled ? ' selected' : '') + '"><i class="fa-solid fa-bacon"></i></span>';
+    }
+    return '<div class="rating" role="img" aria-label="Rated ' + product.rating.toFixed(1) + ' out of 5 by ' + votes + ' customers">' + icons + '</div>' +
+           '<div class="average-rating">Samgyup Level: ' + product.rating.toFixed(1) + ' (' + votes + (votes === 1 ? ' review' : ' reviews') + ')</div>';
+}
+
 // Function to display products
 function displayProducts(productsToDisplay) {
     const productList = document.getElementById('product-list');
@@ -30,14 +46,7 @@ function displayProducts(productsToDisplay) {
             <div class="buttom">
                 <p class="product-title">${product.title}</p>
                 <h4 class="product-desc">${product.desc}</h4>
-                <div class="rating">
-                    <span class="samgyup s1" data-value="1"><i class="fa-solid fa-bacon"></i></span>
-                    <span class="samgyup s2" data-value="2"><i class="fa-solid fa-bacon"></i></span>
-                    <span class="samgyup s3" data-value="3"><i class="fa-solid fa-bacon"></i></span>
-                    <span class="samgyup s4" data-value="4"><i class="fa-solid fa-bacon"></i></span>
-                    <span class="samgyup s5" data-value="5"><i class="fa-solid fa-bacon"></i></span>
-                </div>
-                <div class="average-rating">Samgyup Level: <span class="avg-rating">0</span></div>
+                ${ratingHtml(product)}
                 <p class="product-category" style="color:white;">Category: ${product.category}</p>
                 <h2 class="product-price" style="color:gold;">₱ ${product.price}</h2>
                 <div class="quantity-control">
@@ -51,23 +60,6 @@ function displayProducts(productsToDisplay) {
         productList.appendChild(productBox);
     });
 
-    // Set up rating event listeners after products are displayed
-    document.querySelectorAll('.rating .samgyup').forEach(samgyup => {
-        samgyup.addEventListener('click', function() {
-            const rating = this.getAttribute('data-value');
-            const samgyups = this.parentNode.children;
-
-            for (let i = 0; i < samgyups.length; i++) {
-                samgyups[i].classList.remove('selected');
-                if (i < rating) {
-                    samgyups[i].classList.add('selected');
-                }
-            }
-
-            const avgRatingElement = this.closest('.product').querySelector('.avg-rating');
-            avgRatingElement.textContent = rating;
-        });
-    });
 }
 
 // Function to change quantity of product in the cart

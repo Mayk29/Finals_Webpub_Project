@@ -65,7 +65,9 @@ switch ($resource) {
     // ----------------------------------------------------------------- products
     case 'products':
         if ($method === 'GET' && count($parts) === 1) {
-            respond(array_map('product_out', db()->query('SELECT * FROM ' . t('products') . ' ORDER BY id')->fetchAll()));
+            $pdo = db();
+            ensure_ratings_table($pdo);
+            respond(array_map('product_out', $pdo->query('SELECT p.*, r.rating, r.votes FROM ' . t('products') . ' p LEFT JOIN ' . t('product_ratings') . ' r ON r.product_id = p.id ORDER BY p.id')->fetchAll()));
         }
         if ($method === 'POST' && count($parts) === 1) {
             require_admin();
@@ -147,6 +149,99 @@ switch ($resource) {
 
     // ------------------------------------------------------------------- orders
     case 'orders':
+        // Customer: find the orders placed with a contact number (name and address are never returned).
+        if ($method === 'POST' && ($parts[1] ?? '') === 'lookup' && count($parts) === 2) {
+            $in = input();
+            $key = digits((string) ($in['contact'] ?? ''));
+            if (strlen($key) < 7) {
+                fail(422, 'Please enter the contact number you used when ordering.');
+            }
+            $pdo = db();
+            ensure_order_extras($pdo);
+            $stmt = $pdo->prepare('SELECT id, status, items, total, created_at FROM ' . t('orders') . ' WHERE ' . contact_sql() . ' = ? ORDER BY id DESC LIMIT 20');
+            $stmt->execute([$key]);
+            $orders = $stmt->fetchAll();
+            $images = [];
+            foreach ($pdo->query('SELECT id, image FROM ' . t('products'))->fetchAll() as $p) {
+                $images[(int) $p['id']] = $p['image'];
+            }
+            $rated = $pdo->prepare('SELECT product_id, rating FROM ' . t('order_ratings') . ' WHERE order_id = ?');
+            foreach ($orders as &$o) {
+                $o['id'] = (int) $o['id'];
+                $o['total'] = num($o['total']);
+                $rated->execute([$o['id']]);
+                $mine = [];
+                foreach ($rated->fetchAll() as $r) {
+                    $mine[(int) $r['product_id']] = (int) $r['rating'];
+                }
+                $o['items'] = array_map(function ($line) use ($images, $mine) {
+                    $line['image'] = $images[$line['id']] ?? '';
+                    $line['rated'] = $mine[$line['id']] ?? null;
+                    return $line;
+                }, json_decode($o['items'], true) ?: []);
+            }
+            respond($orders);
+        }
+        // Customer: rate one product of a completed order, once.
+        if ($method === 'POST' && $id !== null && ($parts[2] ?? '') === 'rate' && count($parts) === 3) {
+            $in = input();
+            $key = digits((string) ($in['contact'] ?? ''));
+            $pid = (int) ($in['product_id'] ?? 0);
+            $stars = (int) ($in['rating'] ?? 0);
+            if (strlen($key) < 7 || $pid < 1 || $stars < 1 || $stars > 5) {
+                fail(422, 'Please choose a rating from 1 to 5.');
+            }
+            $pdo = db();
+            ensure_order_extras($pdo);
+            ensure_ratings_table($pdo);
+            $stmt = $pdo->prepare('SELECT status, items FROM ' . t('orders') . ' WHERE id = ? AND ' . contact_sql() . ' = ?');
+            $stmt->execute([$id, $key]);
+            $order = $stmt->fetch();
+            if (!$order) {
+                fail(404, 'Order not found for that contact number.');
+            }
+            if ($order['status'] !== 'completed') {
+                fail(403, 'You can rate products once your order is completed.');
+            }
+            $inOrder = false;
+            foreach (json_decode($order['items'], true) ?: [] as $line) {
+                if ((int) $line['id'] === $pid) {
+                    $inOrder = true;
+                }
+            }
+            if (!$inOrder) {
+                fail(422, 'That product is not part of this order.');
+            }
+            $dup = $pdo->prepare('SELECT 1 FROM ' . t('order_ratings') . ' WHERE order_id = ? AND product_id = ?');
+            $dup->execute([$id, $pid]);
+            if ($dup->fetch()) {
+                fail(409, 'You already rated this product for this order.');
+            }
+            $pdo->beginTransaction();
+            $pdo->prepare('INSERT INTO ' . t('order_ratings') . ' (order_id, product_id, rating, created_at) VALUES (?, ?, ?, ?)')
+                ->execute([$id, $pid, $stars, gmdate('Y-m-d H:i:s')]);
+            $pdo->prepare('UPDATE ' . t('product_ratings') . ' SET rating = ROUND((rating * votes + ?) / (votes + 1), 2), votes = votes + 1 WHERE product_id = ?')
+                ->execute([$stars, $pid]);
+            $pdo->commit();
+            $now = $pdo->prepare('SELECT rating, votes FROM ' . t('product_ratings') . ' WHERE product_id = ?');
+            $now->execute([$pid]);
+            $r = $now->fetch();
+            respond(['ok' => true, 'rating' => round((float) $r['rating'], 1), 'votes' => (int) $r['votes']], 201);
+        }
+        // Admin: mark an order pending, completed or cancelled.
+        if ($method === 'PUT' && $id !== null && count($parts) === 2) {
+            require_admin();
+            $status = (string) (input()['status'] ?? '');
+            if (!in_array($status, ['pending', 'completed', 'cancelled'], true)) {
+                fail(422, "Status must be 'pending', 'completed' or 'cancelled'.");
+            }
+            $pdo = db();
+            ensure_order_extras($pdo);
+            $pdo->prepare('UPDATE ' . t('orders') . ' SET status = ? WHERE id = ?')->execute([$status, $id]);
+            $chk = $pdo->prepare('SELECT 1 FROM ' . t('orders') . ' WHERE id = ?');
+            $chk->execute([$id]);
+            $chk->fetch() ? respond(['ok' => true, 'id' => $id, 'status' => $status]) : fail(404, 'Order not found.');
+        }
         if ($method === 'POST' && count($parts) === 1) {
             $in = input();
             $name = text($in, 'name', 100);
@@ -197,7 +292,7 @@ switch ($resource) {
         if ($method === 'GET' && count($parts) === 1) {
             require_admin();
             $pdo = db();
-            ensure_orders_table($pdo);
+            ensure_order_extras($pdo);
             $rows = $pdo->query('SELECT * FROM ' . t('orders') . ' ORDER BY id DESC')->fetchAll();
             foreach ($rows as &$r) {
                 $r['id'] = (int) $r['id'];
