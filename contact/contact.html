@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,800;1,900&display=swap" rel="stylesheet">
     <title>Contact Page | PAPA J's Unli Samgy and Meat Shop</title>
@@ -40,11 +40,11 @@
                 <div class="contactInfo">
                     <div class="iconGroup">
                         <div class="icon">
-                            <i class="fa-solid fa-phone"></i>
+                            <i class="fa-solid fa-globe"></i>
                         </div>
                         <div class="details">
                             <span>Blogspot</span>
-                            <span>https://samgyupsal143buddies.blogspot.com/</span>
+                            <span><a href="https://samgyupsal143buddies.blogspot.com/" target="_blank" rel="noopener">https://samgyupsal143buddies.blogspot.com/</a></span>
                         </div>
                     </div>
                     <div class="iconGroup">
@@ -53,7 +53,7 @@
                         </div>
                         <div class="details">
                             <span>Email</span>
-                            <span>siguijay@gmail.com</span>
+                            <span><a href="mailto:siguijay@gmail.com">siguijay@gmail.com</a></span>
                         </div>
                     </div>
                     <div class="iconGroup">
@@ -62,53 +62,47 @@
                         </div>
                         <div class="details">
                             <span>Location</span>
-                            <span>113 Purok 3, San Fernando, Philippines</span>
+                            <span><a href="https://www.google.com/maps/search/?api=1&query=15.115124789068501,120.63444045417252" target="_blank" rel="noopener">113 Purok 3, San Fernando, Philippines</a></span>
                         </div>
                     </div>
                 </div>
                 <div class="socialMedia">
-                    <a href="SMM/smm_fb.html" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="SMM/smm_tiktok.html"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="SMM/smm_ig.html"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="SMM/smm_email.html"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="SMM/smm_fb.html" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="SMM/smm_tiktok.html" aria-label="TikTok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="SMM/smm_ig.html" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="SMM/smm_email.html" aria-label="Email" title="Email"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </section>
 
             <section class="col right">
                 <h2>Contact Form</h2>
-                <div class="alert" style="display:none; color: red;"></div>
+                <div class="alert" role="status" aria-live="polite" style="display:none;"></div>
                 <form class="messageForm" id="papajs">
                     <div class="inputGroup halfWidth">
-                        <input type="text" name="fullname" required="required" id="fullname">
+                        <input type="text" name="fullname" required="required" id="fullname" autocomplete="name" maxlength="100">
                         <label for="fullname">Full Name</label>
                     </div>
                     <div class="inputGroup halfWidth">
-                        <input type="email" name="email" required="required" id="email">
+                        <input type="email" name="email" required="required" id="email" autocomplete="email" maxlength="255">
                         <label for="email">Email</label>
                     </div>
                     <div class="inputGroup fullWidth">
-                        <input type="tel" name="contact" required="required" id="contact" pattern="[0-9]{11}">
+                        <input type="tel" name="contact" required="required" id="contact" autocomplete="tel" inputmode="tel" maxlength="30" pattern="[0-9+()\-\s]{7,30}" title="Your mobile or phone number, for example 0917 123 4567">
                         <label for="contact">Contact No.</label>
                     </div>
                     <div class="inputGroup fullWidth">
-                        <textarea required=" required" id="message"></textarea>
+                        <textarea required="required" id="message" name="message" maxlength="2000"></textarea>
                         <label for="message">Message or Feedback</label>
                     </div>
                     <div class="inputGroup fullWidth">
-                        <button type="submit"> Submit Form</button>
+                        <button type="submit" id="send-btn">Submit Form</button>
                     </div>
                 </form>
                 
                 <div id="map" class="col">
-                    <gmp-map 
-                        center="15.115124789068501,120.63444045417252" 
-                        zoom="17" map-id="DEMO_MAP_ID" 
-                        style="height: 400px">
-                        <gmp-advanced-marker
-                            position="15.115124789068501,120.63444045417252"
-                            title="PAPA J’S Unli Samgy and Meat Shop"
-                        ><h1 class="location">Our Location</h1 ></gmp-advanced-marker>
-                    </gmp-map>
+                    <iframe title="Map showing PAPA J's Unli Samgy and Meat Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=120.6304%2C15.1126%2C120.6384%2C15.1176&amp;layer=mapnik&amp;marker=15.115124789068501%2C120.63444045417252"></iframe>
+                    <a class="mapLink" href="https://www.google.com/maps/dir/?api=1&destination=15.115124789068501,120.63444045417252" target="_blank" rel="noopener"><i class="fa-solid fa-location-arrow"></i> Get directions</a>
                 </div>
             </section>
             
@@ -119,8 +113,6 @@
     <footer>
         <p>&copy; Copyright 2024 PAPA J's Unli Samgy and Meat Shop</p>
     </footer>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByZ7V0cinymhV7rnfvYOofCTFvLYQQ0RU&loading=async&libraries=maps,marker&v=beta"
-    defer>
-      </script>
+    <script src="scripts/script.js?v=1" defer></script>
 </body>
 </html>
