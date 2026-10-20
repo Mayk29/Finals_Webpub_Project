@@ -13,7 +13,7 @@
   img, video { max-width: 100%; }
 
   /* ---------- Header and menu ---------- */
-  header {
+  header:has(.logo) {
     height: 72px !important;
     padding: 0 16px !important;
     gap: 12px;
@@ -249,7 +249,7 @@
 }
 
 @media (max-width: 600px) {
-  header { height: 64px !important; padding: 0 12px !important; }
+  header:has(.logo) { height: 64px !important; padding: 0 12px !important; }
   header .logo .haru-img, header .logo .haru-img:hover { height: 44px; }
   header .navbar { max-height: calc(100vh - 64px); max-height: calc(100dvh - 64px); }
   header .navbar ul li a, header .navbar ul li a:hover { font-size: 24px; }
@@ -275,7 +275,7 @@
 /* Landing page on laptops and small desktops. The original layout is a 1920px artboard (text at left 160px,
    door, photo and door in a row to the right). Below 1920px the same positions are kept but scaled with the
    screen width, so the text column and the pictures never overlap. */
-@media (min-width: 1101px) and (max-width: 1919px) {
+@media (min-width: 1100.02px) and (max-width: 1919px) {
   .container:has(.info) .content .info {
     left: 8.33vw;
     width: 36.5vw;
@@ -316,16 +316,66 @@
 /* Feature and social pages on laptops. The gallery and trivia block were laid out for a 1920px screen:
    the last video wrapped onto a row shared with the next section (and stretched into a tall black box),
    and the trivia text and infographic fell onto separate rows. Same design, sized to fit. */
-@media (min-width: 1101px) and (max-width: 1919px) {
+@media (min-width: 1100.02px) and (max-width: 1919px) {
   #food-gallery { align-items: flex-start; }
   .food-item, .first-item, .last-item { width: clamp(170px, calc((100vw - 270px) / 6), 250px); }
   .first-item video, .last-item video { width: 100%; height: auto; aspect-ratio: 3 / 5; }
   #food-gallery > div:not([class]) { flex: 0 0 100%; text-align: center; }
   .info-disp { width: calc(50% - 30px); }
 }
-@media (min-width: 1101px) and (max-width: 1699px) {
+@media (min-width: 1100.02px) and (max-width: 1699px) {
   .first-item, .last-item { right: 0; left: 0; }
 }
+
+/* ==========================================================================
+   One spacing standard for every page: header -> content -> footer.
+   --page-gap is the space under the header and above the footer;
+   --hdr is the header height (used by the pages whose header is fixed).
+   ========================================================================== */
+:root { --page-gap: 48px; --hdr: 120px; }
+@media (max-width: 1100px) { :root { --page-gap: 36px; --hdr: 72px; } }
+@media (max-width: 600px)  { :root { --page-gap: 24px; --hdr: 64px; } }
+
+/* Footer: same distance from the content everywhere (pages whose last block already ends in
+   padding, like contact, reset it below). */
+footer { margin-top: var(--page-gap); }
+
+/* Landing (fixed header): the photo sits 80px below .content, so start the block that much higher. */
+.container:has(.info) { margin-top: calc(var(--hdr) + var(--page-gap) - 80px); margin-bottom: 0; } /* empty block: top and bottom margins would merge */
+@media (max-width: 1100px) {
+  .container:has(.info) { margin-top: calc(var(--hdr) + var(--page-gap)); margin-bottom: var(--page-gap); }
+}
+
+/* Feature and social pages: hero, then the first block one gap below it, last block one gap above the footer. */
+.container:has(.hero-img) { margin: var(--page-gap) 0 0; }
+#food-gallery { position: static; margin: var(--page-gap) 20px 0; }
+.display-info { margin-bottom: 0; }
+body > div > .product-display { margin-top: var(--page-gap); }
+body > div > .display-offer,
+body > div > .display-offer-email { margin-bottom: 0; }
+body > div > .display-offer .product-disp { margin-bottom: 0; }
+.product-disp-email img,
+body > div > .display-offer .product-disp img { display: block; }
+
+/* Contact: the dark photo block carries the gap as padding, so the footer touches it. */
+.container:has(.row) { padding-block: var(--page-gap); min-height: 0; }
+.container:has(.row) #map { margin-bottom: 0; }
+body:has(.container .row) footer { margin-top: 0; }
+
+/* Feedback and login/signup: the panel is the content. */
+header:has(+ main), header:has(+ .search-container) { margin-bottom: 0; }
+body > main { margin: var(--page-gap) auto; }
+body:has(> main) footer { margin-top: 0; }
+
+/* Products (fixed header). The header is the same height as on the other pages. */
+.body-cart header { height: var(--hdr); }
+.header-content { margin-top: calc(var(--hdr) + var(--page-gap)); }
+.filter-sort { margin-top: var(--page-gap); }
+.body-cart .container { margin-top: var(--page-gap); margin-bottom: 0; }
+
+/* Customer pages */
+body:not(:has(.info)):has(.content) > .container { margin: var(--page-gap) 0 0; }
+header + h1 { margin-top: var(--page-gap); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
