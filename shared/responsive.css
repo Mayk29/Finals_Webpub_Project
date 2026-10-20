@@ -401,6 +401,11 @@ body:has(> main) footer { margin-top: 0; }
 .body-cart header { height: var(--hdr); }
 .header-content { width: var(--shell-w); margin-top: calc(var(--hdr) + var(--page-gap)); }
 .filter-sort { width: var(--shell-w); justify-content: flex-start; margin-top: var(--page-gap); }
+/* Desktop: the filters live inside the top bar (moved by nav.js), right-aligned beside the search box. */
+@media (min-width: 1100.02px) {
+  .header-content .filter-sort { width: auto; margin: 0 16px 0 auto; justify-content: flex-end; }
+  .header-content .search-bar { margin-left: 0; }
+}
 .body-cart .container { width: var(--shell-w); max-width: none; padding-inline: 0; margin-top: var(--page-gap); margin-bottom: 0; } /* the page loads Bootstrap, whose .container caps the width */
 /* Product photos were taller than their fixed 250px box and covered the product title: let the box grow with the photo. */
 /* Cart panel: as tall as its content (it was stretched to the height of the product list); it grows only when items are added. */

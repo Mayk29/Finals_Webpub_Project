@@ -136,7 +136,7 @@ function updateCart() {
 function updateCartCount() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const cartCountElement = document.getElementById('count');
-    cartCountElement.innerText = totalItems; // Update display
+    cartCountElement.innerHTML = '<i class="fa-solid fa-cart-shopping" style="margin-right: 5px;"></i>' + totalItems; // keep the cart icon next to the number
 }
 // Function to remove item from cart
 function removeFromCart(productId) {

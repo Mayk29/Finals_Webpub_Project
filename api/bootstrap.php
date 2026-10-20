@@ -253,3 +253,23 @@ function require_admin(): void
         fail(403, 'Admin key required.');
     }
 }
+
+// The orders table is created the first time it is needed, so a database that was
+// installed before checkout existed picks it up without a manual step.
+function ensure_orders_table(PDO $pdo): void
+{
+    $driver = cfg()['driver'] ?? 'mysql';
+    $id = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
+    $tail = $driver === 'sqlite' ? '' : ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
+    $pdo->exec('CREATE TABLE IF NOT EXISTS ' . t('orders') . " (
+        id $id,
+        name VARCHAR(255) NOT NULL,
+        contact VARCHAR(50) NOT NULL,
+        order_type VARCHAR(20) NOT NULL,
+        address VARCHAR(500) NOT NULL,
+        notes VARCHAR(500) NOT NULL,
+        items TEXT NOT NULL,
+        total DOUBLE NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )$tail");
+}

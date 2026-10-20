@@ -145,6 +145,69 @@ switch ($resource) {
         }
         break;
 
+    // ------------------------------------------------------------------- orders
+    case 'orders':
+        if ($method === 'POST' && count($parts) === 1) {
+            $in = input();
+            $name = text($in, 'name', 100);
+            $contact = text($in, 'contact', 30);
+            if (!preg_match('/^[0-9+()\-\s]{7,30}$/', $contact)) {
+                fail(422, 'Please enter a valid contact number.');
+            }
+            $type = (string) ($in['type'] ?? '');
+            if (!in_array($type, ['pickup', 'dine-in', 'delivery'], true)) {
+                fail(422, 'Please choose how you want to receive your order.');
+            }
+            $address = trim((string) ($in['address'] ?? ''));
+            if ($type === 'delivery' && $address === '') {
+                fail(422, 'Please enter your delivery address.');
+            }
+            $notes = trim((string) ($in['notes'] ?? ''));
+            if (strlen($address) > 500 || strlen($notes) > 500) {
+                fail(422, 'Address or notes are too long.');
+            }
+            $raw = $in['items'] ?? [];
+            if (!is_array($raw) || count($raw) < 1 || count($raw) > 50) {
+                fail(422, 'Your cart is empty.');
+            }
+            // Prices come from the products table, never from the browser.
+            $pdo = db();
+            $lookup = $pdo->prepare('SELECT title, price FROM ' . t('products') . ' WHERE id = ?');
+            $lines = [];
+            $total = 0;
+            foreach ($raw as $row) {
+                $pid = (int) ($row['id'] ?? 0);
+                $qty = (int) ($row['qty'] ?? 0);
+                if ($qty < 1 || $qty > 99) {
+                    fail(422, 'Invalid quantity.');
+                }
+                $lookup->execute([$pid]);
+                $p = $lookup->fetch();
+                if (!$p) {
+                    fail(422, 'An item in your cart is no longer available.');
+                }
+                $lines[] = ['id' => $pid, 'title' => $p['title'], 'price' => num($p['price']), 'qty' => $qty];
+                $total += $p['price'] * $qty;
+            }
+            ensure_orders_table($pdo);
+            $pdo->prepare('INSERT INTO ' . t('orders') . ' (name, contact, order_type, address, notes, items, total, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+                ->execute([$name, $contact, $type, $address, $notes, json_encode($lines, JSON_UNESCAPED_UNICODE), $total, gmdate('Y-m-d H:i:s')]);
+            respond(['ok' => true, 'id' => (int) $pdo->lastInsertId(), 'total' => num($total)], 201);
+        }
+        if ($method === 'GET' && count($parts) === 1) {
+            require_admin();
+            $pdo = db();
+            ensure_orders_table($pdo);
+            $rows = $pdo->query('SELECT * FROM ' . t('orders') . ' ORDER BY id DESC')->fetchAll();
+            foreach ($rows as &$r) {
+                $r['id'] = (int) $r['id'];
+                $r['total'] = num($r['total']);
+                $r['items'] = json_decode($r['items'], true);
+            }
+            respond($rows);
+        }
+        break;
+
     // ------------------------------------------------------------------ messages
     case 'contacts':
         if ($method === 'GET' && count($parts) === 1) {
@@ -166,7 +229,7 @@ switch ($resource) {
         break;
 
     case '':
-        respond(['name' => "PAPA J's API", 'routes' => ['customers', 'products', 'signup', 'login', 'contacts']]);
+        respond(['name' => "PAPA J's API", 'routes' => ['customers', 'products', 'signup', 'login', 'contacts', 'orders']]);
 }
 
 fail(404, 'Route not found.');

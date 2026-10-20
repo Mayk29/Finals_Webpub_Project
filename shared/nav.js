@@ -44,4 +44,18 @@
       if (window.innerWidth <= 1100) sidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
+
+  // Products page, desktop only: the sort and category dropdowns sit in the top bar beside the search box.
+  var panel = document.querySelector('.header-content');
+  var filters = document.querySelector('.filter-sort');
+  var search = panel && panel.querySelector('.search-bar');
+  if (panel && filters && search) {
+    var wide = window.matchMedia('(min-width: 1100.02px)');
+    var place = function () {
+      if (wide.matches) panel.insertBefore(filters, search);
+      else panel.insertAdjacentElement('afterend', filters);
+    };
+    place();
+    wide.addEventListener('change', place);
+  }
 })();
