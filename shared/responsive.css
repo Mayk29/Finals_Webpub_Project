@@ -355,7 +355,8 @@ footer { margin-top: var(--page-gap); }
 }
 
 /* Feature and social pages: hero, then the first block one gap below it, last block one gap above the footer. */
-.container:has(.hero-img) { margin: var(--page-gap) 0 0; }
+/* The hero is a full-width banner: it sits directly under the header (no beige band). */
+.container:has(.hero-img) { margin: 0; }
 /* Gallery (two videos and four cards): one grid from edge to edge at every width, so the first card starts on the
    page edge and the last ends on it. 6 columns on wide screens, then 3, 2 and 1. The section blocks below span all columns. */
 #food-gallery {
@@ -372,6 +373,33 @@ footer { margin-top: var(--page-gap); }
 @media (max-width: 520px)  { #food-gallery { grid-template-columns: minmax(0, 1fr); } }
 #food-gallery > div:not([class]) { grid-column: 1 / -1; text-align: center; }
 #food-gallery > .display-info { grid-column: 1 / -1; justify-self: center; }
+/* Sections inside the gallery (We offer / Past events / Trivia) are spaced evenly: the old 10em bottom margins plus
+   4em heading margins left a huge empty band between them. */
+/* The photo groups are flex rows at every width (inline images left stray space under each row). */
+#food-gallery .display-offer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 0;
+}
+#food-gallery .product-disp,
+#food-gallery .product-disp1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+}
+#food-gallery .product-disp img,
+#food-gallery .product-disp1 img { display: block; width: min(100%, 300px); margin: 0; }
+#food-gallery .product-disp1 figure { display: block; width: min(100%, 300px); margin: 0; }
+#food-gallery .product-disp1 figure figcaption { margin-left: 0; }
+#food-gallery .product-disp1.second { margin-top: 16px; }
+#food-gallery .cust-info { width: 100%; margin-top: 0; }
+#food-gallery .product-display,
+#food-gallery .product-display1 { margin: var(--page-gap) 16px var(--page-gap); }
 .food-item, .first-item, .last-item { width: auto; margin: 0; right: 0; left: 0; }
 .first-item video, .last-item video { display: block; width: 100%; height: auto; aspect-ratio: 3 / 5; max-height: 420px; object-fit: cover; }
 .display-info { margin-bottom: 0; }
@@ -417,7 +445,7 @@ body:has(> main) footer { margin-top: 0; }
 .images { width: min(65%, 300px); max-width: 300px; height: auto; }
 
 /* Customer pages */
-body:not(:has(.info)):has(.content) > .container { margin: var(--page-gap) 0 0; }
+body:not(:has(.info)):not(:has(.hero-img)):has(.content) > .container { margin: var(--page-gap) 0 0; }
 header + h1 { margin-top: var(--page-gap); }
 
 @media (prefers-reduced-motion: reduce) {
