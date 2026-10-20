@@ -111,6 +111,8 @@
     line-height: 1.2;
   }
   header .navbar ul li:last-child a { border-bottom: 0; }
+  /* the last menu item is only an icon on desktop; in the menu it gets a label */
+  header .navbar ul li:last-child a::after { content: "Login"; margin-left: 10px; }
 
   /* ---------- Landing page: same composition, text on top and the door-photo-door row below ---------- */
   .container:has(.info) { margin-top: 96px; }
