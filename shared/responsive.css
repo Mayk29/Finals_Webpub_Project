@@ -15,7 +15,8 @@
   /* ---------- Header and menu ---------- */
   header:has(.logo) {
     height: 72px !important;
-    padding: 0 16px !important;
+    padding-block: 0 !important;
+    padding-inline: var(--edge) !important;
     gap: 12px;
     z-index: 50;
   }
@@ -114,7 +115,7 @@
   /* ---------- Landing page: same composition, text on top and the door-photo-door row below ---------- */
   .container:has(.info) { margin-top: 96px; }
   .container:has(.info) .content {
-    --w: min(calc(100vw - 24px), 800px);
+    --w: calc(100% - 2 * var(--page-gap));   /* the row spans the page edge to edge */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -125,7 +126,7 @@
     position: static;
     flex: 0 0 100%;
     width: auto;
-    padding: 0 16px;
+    padding: 0 var(--page-gap);
   }
   .container:has(.info) .content .info h1 { font-size: clamp(40px, 9vw, 60px); letter-spacing: 6px; }
   .container:has(.info) .content .info h3 { font-size: clamp(28px, 6vw, 44px); }
@@ -135,19 +136,21 @@
     position: static;
     float: none;
     width: calc(var(--w) * .25);
-    height: calc(var(--w) * .625);
+    height: auto;
+    aspect-ratio: 2 / 5;
     margin: 28px 0 0;
     padding: 0;
   }
   .container:has(.info) .door1 { order: 2; }
-  .container:has(.info) .product-img { order: 3; }
+  .container:has(.info) .product-img { order: 3; width: calc(var(--w) * .5); margin-top: 28px; }
   .container:has(.info) .door2 { order: 4; }
   .container:has(.info) .content .product-img > img {
     float: none;
     display: block;
-    width: calc(var(--w) * .5);
-    height: calc(var(--w) * .625);
-    margin: 28px 0 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    margin: 0;
     padding: 0;
   }
 
@@ -162,11 +165,6 @@
 
   /* ---------- Feature page ---------- */
   .container:has(.hero-img) { margin: 24px 0 0; }
-  #food-gallery { margin: 16px; bottom: 0; }
-  .first-item, .last-item { right: 0; left: 0; }
-  .food-item, .first-item, .last-item { width: min(100%, 320px); }
-  .first-item video, .last-item video { width: 100%; height: auto; aspect-ratio: 3 / 5; }
-
   .display-offer {
     display: flex;
     flex-wrap: wrap;
@@ -210,7 +208,6 @@
   #map { right: 0; width: 100%; height: 300px; }
 
   /* ---------- Products / cart page ---------- */
-  .body-cart header { padding: 0 16px; }
   .header-content {
     width: calc(100% - 32px);
     height: auto;
@@ -249,7 +246,7 @@
 }
 
 @media (max-width: 600px) {
-  header:has(.logo) { height: 64px !important; padding: 0 12px !important; }
+  header:has(.logo) { height: 64px !important; }
   header .logo .haru-img, header .logo .haru-img:hover { height: 44px; }
   header .navbar { max-height: calc(100vh - 64px); max-height: calc(100dvh - 64px); }
   header .navbar ul li a, header .navbar ul li a:hover { font-size: 24px; }
@@ -272,29 +269,30 @@
   .sidebar { padding: 12px; }
 }
 
-/* Landing page on laptops and small desktops. The original layout is a 1920px artboard (text at left 160px,
-   door, photo and door in a row to the right). Below 1920px the same positions are kept but scaled with the
-   screen width, so the text column and the pictures never overlap. */
-@media (min-width: 1100.02px) and (max-width: 1919px) {
+/* Landing page on laptops and desktops. The original layout is a 1920px artboard (text at left 160px, door, photo and
+   door in a row to the right). Sizes use --u (1vw, capped at the 1920px size) and both columns hang from the shared page
+   edge, so the text and the pictures never overlap and line up with the header. */
+@media (min-width: 1100.02px) {
+  .container:has(.info) .content { --u: min(1vw, 19.2px); }
   .container:has(.info) .content .info {
-    left: 8.33vw;
-    width: 36.5vw;
+    left: var(--edge);
+    width: calc(36.5 * var(--u));
   }
-  .container:has(.info) .content .info h1 { font-size: clamp(40px, 3.125vw, 60px); letter-spacing: clamp(6px, .625vw, 12px); }
-  .container:has(.info) .content .info h3 { font-size: clamp(28px, 2.6vw, 50px); }
-  .container:has(.info) .content .info p { font-size: clamp(15px, 1.04vw, 20px); line-height: 2.3; letter-spacing: 1.5px; }
+  .container:has(.info) .content .info h1 { font-size: clamp(40px, calc(3.125 * var(--u)), 60px); letter-spacing: clamp(6px, calc(.625 * var(--u)), 12px); }
+  .container:has(.info) .content .info h3 { font-size: clamp(28px, calc(2.604 * var(--u)), 50px); }
+  .container:has(.info) .content .info p { font-size: clamp(15px, calc(1.042 * var(--u)), 20px); line-height: 2.3; letter-spacing: 1.5px; }
   .container:has(.info) .content .info button { margin-top: 12px; }
 
   .container:has(.info) .content .product-img {
     position: absolute;
     top: 80px;
-    left: 63.5vw;
+    left: calc(100% - var(--edge) - 31.25 * var(--u));
   }
   .container:has(.info) .content .product-img > img {
     float: none;
     display: block;
-    width: 20.83vw;
-    height: 26.04vw;
+    width: calc(20.83 * var(--u));
+    height: calc(26.04 * var(--u));
     margin: 0;
     padding: 0;
   }
@@ -304,27 +302,20 @@
     top: 80px;
     right: auto;
     float: none;
-    width: 10.42vw;
-    height: 26.04vw;
+    width: calc(10.42 * var(--u));
+    height: calc(26.04 * var(--u));
     margin: 0;
     padding: 0;
   }
-  .container:has(.info) .door1 { left: 53.1vw; }
-  .container:has(.info) .door2 { left: 84.4vw; }
+  .container:has(.info) .door1 { left: calc(100% - var(--edge) - 41.67 * var(--u)); }
+  .container:has(.info) .door2 { left: calc(100% - var(--edge) - 10.42 * var(--u)); }
 }
 
 /* Feature and social pages on laptops. The gallery and trivia block were laid out for a 1920px screen:
    the last video wrapped onto a row shared with the next section (and stretched into a tall black box),
    and the trivia text and infographic fell onto separate rows. Same design, sized to fit. */
 @media (min-width: 1100.02px) and (max-width: 1919px) {
-  #food-gallery { align-items: flex-start; }
-  .food-item, .first-item, .last-item { width: clamp(170px, calc((100vw - 270px) / 6), 250px); }
-  .first-item video, .last-item video { width: 100%; height: auto; aspect-ratio: 3 / 5; }
-  #food-gallery > div:not([class]) { flex: 0 0 100%; text-align: center; }
   .info-disp { width: calc(50% - 30px); }
-}
-@media (min-width: 1100.02px) and (max-width: 1699px) {
-  .first-item, .last-item { right: 0; left: 0; }
 }
 
 /* ==========================================================================
@@ -335,6 +326,21 @@
 :root { --page-gap: 48px; --hdr: 120px; }
 @media (max-width: 1100px) { :root { --page-gap: 36px; --hdr: 72px; } }
 @media (max-width: 600px)  { :root { --page-gap: 24px; --hdr: 64px; } }
+
+/* Side margin: --edge is the distance from the screen edge to the content on every page. It is --page-gap on
+   phones and tablets and grows on wide screens so the content stops at 1600px (the width of the landing artboard).
+   Percentages resolve against the width of the element that uses it. --shell-w is the matching content width. */
+:root { --edge: max(var(--page-gap), calc((100% - 1600px) / 2)); --shell-w: min(calc(100% - 2 * var(--page-gap)), 1600px); }
+
+/* Header: logo on the left edge, menu on the right edge, the same edge the content uses. */
+header:has(.logo) { padding-inline: var(--edge); }
+@media (min-width: 1100.02px) {
+  header:has(.logo) .logo .haru-img { left: 0; margin: 0 10px 0 0; }
+  header:has(.logo) .logo .logo-title { margin-left: 0; font-size: clamp(20px, 2.1vw, 30px); }
+  header:has(.logo) .navbar ul { width: auto; gap: clamp(8px, 1.2vw, 24px); justify-content: flex-end; }
+  header:has(.logo) .navbar ul li { margin: 0; }
+  header:has(.logo) .navbar ul li a { font-size: clamp(22px, 1.8vw, 35px); }
+}
 
 /* Footer: same distance from the content everywhere (pages whose last block already ends in
    padding, like contact, reset it below). */
@@ -348,7 +354,24 @@ footer { margin-top: var(--page-gap); }
 
 /* Feature and social pages: hero, then the first block one gap below it, last block one gap above the footer. */
 .container:has(.hero-img) { margin: var(--page-gap) 0 0; }
-#food-gallery { position: static; margin: var(--page-gap) 20px 0; }
+/* Gallery (two videos and four cards): one grid from edge to edge at every width, so the first card starts on the
+   page edge and the last ends on it. 6 columns on wide screens, then 3, 2 and 1. The section blocks below span all columns. */
+#food-gallery {
+  position: static;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+  width: var(--shell-w);
+  margin: var(--page-gap) auto 0;
+}
+@media (max-width: 1249px) { #food-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px)  { #food-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px)  { #food-gallery { grid-template-columns: minmax(0, 1fr); } }
+#food-gallery > div:not([class]) { grid-column: 1 / -1; text-align: center; }
+#food-gallery > .display-info { grid-column: 1 / -1; justify-self: center; }
+.food-item, .first-item, .last-item { width: auto; margin: 0; right: 0; left: 0; }
+.first-item video, .last-item video { display: block; width: 100%; height: auto; aspect-ratio: 3 / 5; max-height: 420px; object-fit: cover; }
 .display-info { margin-bottom: 0; }
 body > div > .product-display { margin-top: var(--page-gap); }
 body > div > .display-offer,
@@ -358,20 +381,28 @@ body > div > .display-offer .product-disp { margin-bottom: 0; }
 body > div > .display-offer .product-disp img { display: block; }
 
 /* Contact: the dark photo block carries the gap as padding, so the footer touches it. */
-.container:has(.row) { padding-block: var(--page-gap); min-height: 0; }
+.container:has(.row) { padding-block: var(--page-gap); padding-inline: var(--edge); min-height: 0; }
+.container:has(.row) .row { max-width: none; }
+/* The map sits inside the form column; stretch it to the full width of the row (100cqw) so its edges match the content above. */
+.container:has(.row) .row { container-type: inline-size; }
+.container:has(.row) .row section.right { min-width: 0; }
+.container:has(.row) #map { right: calc(100cqw - 100%); width: 100cqw; }
 .container:has(.row) #map { margin-bottom: 0; }
 body:has(.container .row) footer { margin-top: 0; }
 
 /* Feedback and login/signup: the panel is the content. */
 header:has(+ main), header:has(+ .search-container) { margin-bottom: 0; }
-body > main { margin: var(--page-gap) auto; }
+body > main { width: var(--shell-w); margin: var(--page-gap) auto; }
 body:has(> main) footer { margin-top: 0; }
 
 /* Products (fixed header). The header is the same height as on the other pages. */
 .body-cart header { height: var(--hdr); }
-.header-content { margin-top: calc(var(--hdr) + var(--page-gap)); }
-.filter-sort { margin-top: var(--page-gap); }
-.body-cart .container { margin-top: var(--page-gap); margin-bottom: 0; }
+.header-content { width: var(--shell-w); margin-top: calc(var(--hdr) + var(--page-gap)); }
+.filter-sort { width: var(--shell-w); justify-content: flex-start; margin-top: var(--page-gap); }
+.body-cart .container { width: var(--shell-w); max-width: none; padding-inline: 0; margin-top: var(--page-gap); margin-bottom: 0; } /* the page loads Bootstrap, whose .container caps the width */
+/* Product photos were taller than their fixed 250px box and covered the product title: let the box grow with the photo. */
+.img-box { height: auto; min-height: 220px; }
+.images { width: min(65%, 300px); max-width: 300px; height: auto; }
 
 /* Customer pages */
 body:not(:has(.info)):has(.content) > .container { margin: var(--page-gap) 0 0; }
